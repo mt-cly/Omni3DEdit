@@ -1,0 +1,262 @@
+# gt as cond view the cond view as 10 source views + 1 edited views
+# check if the loss can to zero?
+# change cfg=min_Cfg=1.0
+# epsweighting_v10
+VERSION_DICT:
+  H: 576
+  W: 576
+  T: 21 # ten images
+  C: 4
+  f: 8
+  options:
+    chunk_strategy: nearest-gt
+    video_save_fps: 30.0
+    beta_linear_start: 5e-6
+    log_snr_shift: 2.4
+    guider_types: 3 # MULTI_VIEW_UCG
+    cfg: 1.6 # 2.0
+    cfg_min: 1.6 # 1.2
+    camera_scale: 2.0
+    num_steps: 50
+    encoding_t: 1
+    decoding_t: 1
+    num_inputs: None
+    seed: 23
+    # 测试结果保存目录配置
+    test_save_dir: "results"
+
+
+model:
+  base_learning_rate: 1e-5
+  target: seva.model_engine_edit_mmdit.SevaEngine
+  params:
+    ucg_rate: 0.2
+    
+    disable_first_stage_autocast: False
+    log_keys:
+      - txt
+    VERSION_DICT: ${VERSION_DICT}
+
+    # loss_weight: 10.0 
+    loss_weighting_config:
+      target: sgm.modules.diffusionmodules.loss_weighting.EpsWeighting
+
+    sigma_sampler_config:  
+      target: sgm.modules.diffusionmodules.sigma_sampling.DiscreteSampling
+      params:
+        num_idx: 1000
+        discretization_config:
+          # target: sgm.modules.diffusionmodules.discretizer.LegacyDDPMDiscretization # 这是错误的，因为SEVA有snr_shift的
+          target: seva.sampling.DDPMDiscretization
+
+    # sampler_config: #  SEVA没用到，直接在init中创建
+    #   target: sgm.modules.diffusionmodules.sampling.EulerEDMSampler
+    #   params:
+    #     num_steps: 50
+
+    #     discretization_config:
+    #       target: sgm.modules.diffusionmodules.discretizer.LegacyDDPMDiscretization
+
+    #     guider_config:
+    #       target: sgm.modules.diffusionmodules.guiders.VanillaCFG
+    #       params:
+    #         scale: 7.5
+
+    scheduler_config: # 用于训练学习率
+      target: sgm.lr_scheduler.LambdaLinearScheduler
+      params:
+        warm_up_steps: [0]
+        cycle_lengths: [10000000000000]
+        f_start: [1.e-6]
+        f_max: [1.]
+        f_min: [1.]
+
+    baseline_denoiser_config:
+      target: seva.sampling.DiscreteDenoiser
+      params:
+        num_idx: 1000
+        device: cuda
+        discretization_config:            
+          target: seva.sampling.DDPMDiscretization
+
+    denoiser_config: 
+      target: seva.sampling.DiscreteDenoiser_v14
+      params:
+        num_idx: 1000
+        device: cuda
+        discretization_config:            
+          target: seva.sampling.DDPMDiscretization
+
+    network_config:
+      target: sgm.modules.diffusionmodules.openaimodel.UNetModel
+      params:
+        use_checkpoint: True
+        in_channels: 4
+        out_channels: 4
+        model_channels: 320
+        attention_resolutions: [1, 2, 4]
+        num_res_blocks: 2
+        channel_mult: [1, 2, 4, 4]
+        num_head_channels: 64
+        num_classes: sequential
+        adm_in_channels: 1792
+        num_heads: 1
+        transformer_depth: 1
+        context_dim: 768
+        spatial_transformer_attn_type: softmax-xformers
+
+    conditioner_config: 
+      target: seva.model_conditioner.SevaConditioner
+      params:
+        ae:
+          target: sgm.models.autoencoder.AutoEncoder
+          params:
+            chunk_size: 1
+        conditioner:
+          target: seva.modules.conditioner.CLIPConditioner
+        version_dict:
+          H: ${VERSION_DICT.H}
+          W: ${VERSION_DICT.W}
+          T: ${VERSION_DICT.T}
+          C: ${VERSION_DICT.C}
+          f: ${VERSION_DICT.f}    
+          options: ${VERSION_DICT.options}
+        encoding_t: ${VERSION_DICT.options.encoding_t}          
+
+
+    first_stage_config:
+      target: sgm.models.autoencoder.AutoencoderKL
+      params:
+        ckpt_path: ./sdxl-vae/sdxl_vae.safetensors
+        embed_dim: 4
+        monitor: val/rec_loss
+        ddconfig:
+          attn_type: vanilla-xformers
+          double_z: true
+          z_channels: 4
+          resolution: 256
+          in_channels: 3
+          out_ch: 3
+          ch: 128
+          ch_mult: [1, 2, 4, 4]
+          num_res_blocks: 2
+          attn_resolutions: []
+          dropout: 0.0
+        lossconfig:
+          target: torch.nn.Identity
+
+    loss_fn_config: # 用于训练损失函数
+      target: sgm.modules.diffusionmodules.loss.StandardDiffusionLoss
+      params:
+        loss_weighting_config:
+          target: sgm.modules.diffusionmodules.loss_weighting.EpsWeighting
+        sigma_sampler_config:
+          target: sgm.modules.diffusionmodules.sigma_sampling.DiscreteSampling 
+          params:
+            num_idx: 1000
+            discretization_config:
+              # target: sgm.modules.diffusionmodules.discretizer.LegacyDDPMDiscretization # 这是错误的，因为SEVA有snr_shift的
+              target: seva.sampling.DDPMDiscretization
+
+
+
+train_data:
+  target: seva.seva_dataset_edit.SEVAEDITDATASET
+  params:
+    json_folder: ./demo/jsons # ./training_data/jsons
+    VERSION_DICT: ${VERSION_DICT}
+    datasets: ("co3d" "dl3dv")  # tuple of allowed datasets, e.g., ("dataset1", "dataset2") or null for all
+    editing_types: ("add" )  # tuple of allowed editing types, e.g., ("edit1", "edit2") or null for all
+
+
+train_dataloader:
+    batch_size: 1
+    num_workers: 1
+
+
+test_data:
+  target: seva.seva_test_dataset_edit.SEVAEDITDATASET
+  params:
+    json_folder: ./demo/jsons
+    VERSION_DICT: ${VERSION_DICT}
+    datasets: ("demo" )  # tuple of allowed datasets, e.g., ("dataset1", "dataset2") or null for all
+    editing_types: ("add" )  # tuple of allowed editing types, e.g., ("edit1", "edit2") or null for all
+
+test_dataloader:
+    batch_size: 1
+    num_workers: 1
+
+
+
+# data:
+#   target: sgm.data.dataset.StableDataModuleFromConfig
+#   params:
+#     train:
+#       datapipeline:
+#         urls:
+#           # USER: adapt this path the root of your custom dataset
+#           - /data/liyi_chen/code/generative-models/datasets/test_data_v1
+#         pipeline_config:
+#           shardshuffle: 2
+#           sample_shuffle: 2
+
+
+#         decoders:
+#           - pil
+
+#         postprocessors:
+#           - target: sdata.mappers.TorchVisionImageTransforms
+#             params:
+#               key: jpg # USER: you might wanna adapt this for your custom dataset
+#               transforms:
+#                 - target: torchvision.transforms.Resize
+#                   params:
+#                     size: 256
+#                     interpolation: 3
+#                 - target: torchvision.transforms.ToTensor
+#           - target: sdata.mappers.Rescaler
+#             # USER: you might wanna use non-default parameters due to your custom dataset
+#           - target: sdata.mappers.AddOriginalImageSizeAsTupleAndCropToSquare
+#             # USER: you might wanna use non-default parameters due to your custom dataset
+
+#       loader:
+#         batch_size: 2
+#         num_workers: 0 # 
+
+    
+
+
+lightning:
+  modelcheckpoint:
+    params: 
+      every_n_train_steps: 1000
+      save_top_k: -1
+      filename: "model-{step}"
+
+  callbacks:
+    # metrics_over_trainsteps_checkpoint:
+    #   params:
+    #     every_n_train_steps: 800
+
+    image_logger:
+      target: main.ImageLogger
+      params:
+        disabled: False
+        enable_autocast: True
+        batch_frequency: 500
+        max_images: 30
+        increase_log_steps: True
+        log_first_step: False
+        log_images_kwargs:
+          use_ema_scope: False
+          N: 8
+          n_rows: 2
+
+  trainer:
+    devices: -1
+    benchmark: True
+    num_sanity_val_steps: 0
+    accumulate_grad_batches: 1 #  4
+    max_steps: 100000
+    precision: 16-mixed # 32 # 16-mixed #16-mixed
+    # strategy: ddp_find_unused_parameters_true

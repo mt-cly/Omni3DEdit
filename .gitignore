@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+dist/
+build/
+*.so
+
+# PyTorch / checkpoints
+checkpoints/
+*.ckpt
+*.safetensors
+*.pt
+*.pth
+
+# Logs & results
+logs/
+results/
+testtube/
+wandb/
+lightning_logs/
+
+# Data (keep demo data tracked)
+sdxl-vae/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Scripts
+demo.sh
+train.sh
+
+# Misc
+*.log
+.env
