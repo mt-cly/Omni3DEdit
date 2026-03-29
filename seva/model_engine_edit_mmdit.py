@@ -2,6 +2,7 @@ import math
 from contextlib import contextmanager
 from typing import Any, Dict, List, Optional, Tuple, Union
 import time
+import re
 import pytorch_lightning as pl
 import torch
 from torchvision.utils import save_image
@@ -489,7 +490,7 @@ class SevaEngine(pl.LightningModule):
                 return self.BASELINE_DENOISER(self.BASELINE_MODEL, _input, _sigma, _c,
                                               **zeroshot_additional_model_inputs)
 
-            samples_z = self.sampler.highnoise_ours_lownoise_zeroshot(
+            samples_z = self.sampler.mixed_denoise_zeroshot(
                 denoise_func,
                 zeroshot_denoise_func,
                 torch.randn(shape, device=self.device),
@@ -505,13 +506,16 @@ class SevaEngine(pl.LightningModule):
             samples_rgb = self.SEVA_CONDITIONER.ae.decode(samples_z, self.options["decoding_t"])
             samples_rgb = samples_rgb[shape[0] // 2 + 1:]
 
-            # Save individual images
-            out_name = os.path.join(save_dir, "sampled.png")
-            image_names = batch.get('image_names', None)
-            if image_names is not None:
-                names_list = image_names[0] if isinstance(image_names[0], list) else image_names
-                for i in range(samples_rgb.shape[0]):
-                    if i < len(names_list):
+            if self.global_rank == 0:
+                out_name = os.path.join(save_dir, "sampled.png")
+                edited_imgs = (samples_rgb.clamp(-1, 1) + 1) / 2
+                source_imgs = (batch["cond_frames"][0][:edited_imgs.shape[0]].to(edited_imgs.device).clamp(-1, 1) + 1) / 2
+                image_names = batch.get('image_names', None)
+                names_list = image_names[0] if (image_names is not None and isinstance(image_names[0], list)) else image_names
+
+                # Save 10 pair images: left=source, right=edited
+                for i in range(edited_imgs.shape[0]):
+                    if names_list is not None and i < len(names_list):
                         raw = names_list[i]
                         if isinstance(raw, (list, tuple)):
                             raw = next((e for e in raw if isinstance(e, (str, bytes))), raw[0])
@@ -519,21 +523,21 @@ class SevaEngine(pl.LightningModule):
                             raw = raw.decode('utf-8', errors='ignore')
                         if hasattr(raw, '__fspath__'):
                             raw = os.fspath(raw)
-                        raw = str(raw)
-                        base_name = os.path.splitext(os.path.basename(raw))[0]
-                        save_image((samples_rgb[i:i+1].clamp(-1, 1) + 1) / 2,
-                                   os.path.join(save_dir, f"{base_name}.png"))
+                        base_name = os.path.splitext(os.path.basename(str(raw)))[0]
+                        # Keep output names compact and deterministic: original_00003 / edited_00003.
+                        base_name = base_name.split("__", 1)[0]
+                        m = re.match(r"^(original|edited)_(\d{5})(?:_.+)?$", base_name)
+                        if m:
+                            base_name = f"{m.group(1)}_{m.group(2)}"
                     else:
-                        save_image((samples_rgb[i:i+1].clamp(-1, 1) + 1) / 2,
-                                   out_name.replace('.png', f'_view{i:02d}.png'))
-            else:
-                for i in range(samples_rgb.shape[0]):
-                    save_image((samples_rgb[i:i+1].clamp(-1, 1) + 1) / 2,
-                               out_name.replace('.png', f'_view{i:02d}.png'))
+                        base_name = f"view{i:02d}"
+                    pair_img = torch.cat([source_imgs[i:i+1], edited_imgs[i:i+1]], dim=-1)
+                    save_image(pair_img, os.path.join(save_dir, f"{base_name}.png"))
 
-            # Save grid overview
-            samples_rgb = F.interpolate((samples_rgb.clamp(-1, 1) + 1) / 2, scale_factor=0.5, mode='bilinear', align_corners=False)
-            save_image(samples_rgb, out_name)
+                # Save summary image: 2x10 grid (top=source 10, bottom=edited 10)
+                summary = torch.cat([source_imgs, edited_imgs], dim=0)
+                summary = F.interpolate(summary, scale_factor=0.5, mode='bilinear', align_corners=False)
+                save_image(summary, out_name, nrow=source_imgs.shape[0])
 
         return {}
 
@@ -656,6 +660,4 @@ class SevaEngine(pl.LightningModule):
         return log
 
     
-
-
 

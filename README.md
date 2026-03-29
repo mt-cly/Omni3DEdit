@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-  <a href="https://arxiv.org/abs/xxxx.xxxxx"><img src="https://img.shields.io/badge/%F0%9F%93%84%20arXiv-Paper-B31B1B.svg"></a>
+  <a href="https://arxiv.org/abs/2603.17841"><img src="https://img.shields.io/badge/%F0%9F%93%84%20arXiv-Paper-B31B1B.svg"></a>
   <a href="https://mt-cly.github.io/Omni3DEdit_ProjectPage/"><img src="https://img.shields.io/badge/%F0%9F%8F%A0%20Project%20Page-Omni--3DEdit-green.svg" alt="Project Page"></a>
 </p>
 
@@ -42,7 +42,7 @@ pip install -r requirements.txt
 
 ### 1. Data Preparation
 
-Organize your data under `demo/data/<scene_name>/` with two folders:
+Organize your data under `demo/add/<scene_name>/` with two folders:
 - `source_view/` — original multi-view images of the scene
 - `cond_view/` — single-image edited results obtained from image editing models (e.g., QwenImage, GPT-4o, or other closed-source models). The first edited image will be used as the conditioning view by default.
 
@@ -56,8 +56,8 @@ Create a JSON descriptor under `demo/jsons/`. See [demo/jsons/demo_remove_book.j
   "successful_edits": 10,
   "image_pairs": [
     {
-      "original_path": "../data/book/source_view/00030.png",
-      "edited_path": "../data/book/cond_view/00030.png",
+      "original_path": "../remove/book/source_view/00030.png",
+      "edited_path": "../remove/book/cond_view/00030.png",
       "success": true
     }
   ]
@@ -66,7 +66,7 @@ Create a JSON descriptor under `demo/jsons/`. See [demo/jsons/demo_remove_book.j
 
 ### 2. Inference
 
-Checkpoints are automatically downloaded from [HuggingFace](https://huggingface.co/mutou0308/Omni3DEdit) on first run. To use a single GPU, set `--nproc_per_node=1` and `CUDA_VISIBLE_DEVICES=0`. Results are saved to `results/`.
+Checkpoints are automatically downloaded from [HuggingFace](https://huggingface.co/mutou0308/Omni3DEdit) on first run when using `demo.sh` for `add` / `remove` / `appearance` (including `color_change`). If you run `main.py` directly, make sure the checkpoint exists locally first. To use a single GPU, set `--nproc_per_node=1` and `CUDA_VISIBLE_DEVICES=0`. Results are saved to `results/`.
 
 **Object Removal**
 
@@ -84,7 +84,7 @@ python -u -m torch.distributed.run \
     --no_date \
     --train=False \
     --debug \
-    --resume=checkpoints/omni3dedit_removal.ckpt
+    --resume=checkpoints/omni3dedit_remove.ckpt
 ```
 
 **Object Addition**
@@ -122,8 +122,10 @@ python -u -m torch.distributed.run \
     --no_date \
     --train=False \
     --debug \
-    --resume=checkpoints/omni3dedit_appearance.ckpt
+    --resume=checkpoints/omni3dedit_apperance.ckpt
 ```
+
+  Small note: we also provide a  uni-trained checkpoint (`checkpoints/omni3dedit_unitrain.ckpt`), but its single-task performance is usually weaker than task-specific checkpoints.
 
 ### 3. 3D Reconstruction (Optional)
 
@@ -164,9 +166,10 @@ This project builds upon:
 ## Citation
 
 ```bibtex
-@article{chen2025omni3dedit,
+@article{liyi2026omni,
   title={Omni-3DEdit: Generalized Versatile 3D Editing in One-Pass},
-  author={Chen, Liyi and Wang, Pengfei and Zhang, Guowen and Ma, Zhiyuan and Zhang, Lei},
+  author={Liyi, Chen and Pengfei, Wang and Guowen, Zhang and Zhiyuan, Ma and Lei, Zhang},
+  journal={arXiv preprint arXiv:2603.17841},
   year={2026}
 }
 ```

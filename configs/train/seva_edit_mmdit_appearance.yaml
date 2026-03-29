@@ -14,8 +14,8 @@ VERSION_DICT:
     beta_linear_start: 5e-6
     log_snr_shift: 2.4
     guider_types: 3 # MULTI_VIEW_UCG
-    cfg: 1.6 # 2.0
-    cfg_min: 1.6 # 1.2
+    cfg: 3.0 # 2.0
+    cfg_min: 3.0 # 1.2
     camera_scale: 2.0
     num_steps: 50
     encoding_t: 1
@@ -23,7 +23,7 @@ VERSION_DICT:
     num_inputs: None
     seed: 23
     # 测试结果保存目录配置
-    test_save_dir: "results"
+    test_save_dir: "results_unitrain"
 
 
 model:

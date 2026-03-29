@@ -819,7 +819,7 @@ class EulerEDMSampler(object):
             return x, intermediates
         return x
 
-    def highnoise_ours_lownoise_zeroshot(
+    def mixed_denoise_zeroshot(
         self,
         denoiser,
         zeroshot_denoiser,

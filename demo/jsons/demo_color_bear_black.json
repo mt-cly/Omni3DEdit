@@ -1,0 +1,82 @@
+{
+  "editing_type": "color_change",
+  "instruction": "change the bear color to black",
+  "scene_name": "bear_black",
+  "num_images": 10,
+  "successful_edits": 10,
+  "image_pairs": [
+    {
+      "original_path": "../appearance/bear_black/source_view/original_frame_00022.png",
+      "edited_path": "../appearance/bear_black/cond_view/edited_frame_00022.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 0
+    },
+    {
+      "original_path": "../appearance/bear_black/source_view/original_frame_00024.png",
+      "edited_path": "../appearance/bear_black/cond_view/edited_frame_00024.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 1
+    },
+    {
+      "original_path": "../appearance/bear_black/source_view/original_frame_00028.png",
+      "edited_path": "../appearance/bear_black/cond_view/edited_frame_00028.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 0
+    },
+    {
+      "original_path": "../appearance/bear_black/source_view/original_frame_00032.png",
+      "edited_path": "../appearance/bear_black/cond_view/edited_frame_00032.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 0
+    },
+    {
+      "original_path": "../appearance/bear_black/source_view/original_frame_00040.png",
+      "edited_path": "../appearance/bear_black/cond_view/edited_frame_00040.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 1
+    },
+    {
+      "original_path": "../appearance/bear_black/source_view/original_frame_00048.png",
+      "edited_path": "../appearance/bear_black/cond_view/edited_frame_00048.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 0
+    },
+    {
+      "original_path": "../appearance/bear_black/source_view/original_frame_00050.png",
+      "edited_path": "../appearance/bear_black/cond_view/edited_frame_00050.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 0
+    },
+    {
+      "original_path": "../appearance/bear_black/source_view/original_frame_00058.png",
+      "edited_path": "../appearance/bear_black/cond_view/edited_frame_00058.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 1
+    },
+    {
+      "original_path": "../appearance/bear_black/source_view/original_frame_00066.png",
+      "edited_path": "../appearance/bear_black/cond_view/edited_frame_00066.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 1
+    },
+    {
+      "original_path": "../appearance/bear_black/source_view/original_frame_00086.png",
+      "edited_path": "../appearance/bear_black/cond_view/edited_frame_00086.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 1
+    }
+  ],
+  "timestamp": "20260324_000000",
+  "output_folder": "../appearance/bear_black",
+  "source_images": []
+}

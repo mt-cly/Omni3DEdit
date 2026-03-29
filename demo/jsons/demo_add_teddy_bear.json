@@ -1,0 +1,82 @@
+{
+  "editing_type": "add",
+  "instruction": "",
+  "scene_name": "teddy_bear",
+  "num_images": 10,
+  "successful_edits": 10,
+  "image_pairs": [
+    {
+      "original_path": "../add/teddy_bear/source_view/original_00003.png",
+      "edited_path": "../add/teddy_bear/cond_view/edited_00003.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 0
+    },
+    {
+      "original_path": "../add/teddy_bear/source_view/original_00004.png",
+      "edited_path": "../add/teddy_bear/cond_view/edited_00004.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 1
+    },
+    {
+      "original_path": "../add/teddy_bear/source_view/original_00007.png",
+      "edited_path": "../add/teddy_bear/cond_view/edited_00007.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 0
+    },
+    {
+      "original_path": "../add/teddy_bear/source_view/original_00008.png",
+      "edited_path": "../add/teddy_bear/cond_view/edited_00008.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 1
+    },
+    {
+      "original_path": "../add/teddy_bear/source_view/original_00010.png",
+      "edited_path": "../add/teddy_bear/cond_view/edited_00010.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 0
+    },
+    {
+      "original_path": "../add/teddy_bear/source_view/original_00013.png",
+      "edited_path": "../add/teddy_bear/cond_view/edited_00013.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 1
+    },
+    {
+      "original_path": "../add/teddy_bear/source_view/original_00019.png",
+      "edited_path": "../add/teddy_bear/cond_view/edited_00019.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 0
+    },
+    {
+      "original_path": "../add/teddy_bear/source_view/original_00020.png",
+      "edited_path": "../add/teddy_bear/cond_view/edited_00020.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 1
+    },
+    {
+      "original_path": "../add/teddy_bear/source_view/original_00009.png",
+      "edited_path": "../add/teddy_bear/cond_view/edited_00009.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 0
+    },
+    {
+      "original_path": "../add/teddy_bear/source_view/original_00035.png",
+      "edited_path": "../add/teddy_bear/cond_view/edited_00035.png",
+      "original_source_path": "",
+      "success": true,
+      "device_id": 1
+    }
+  ],
+  "timestamp": "20260324_000000",
+  "output_folder": "../add/teddy_bear",
+  "source_images": []
+}

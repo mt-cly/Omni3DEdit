@@ -6,77 +6,77 @@
   "successful_edits": 10,
   "image_pairs": [
     {
-      "original_path": "../data/book/source_view/00030.png",
-      "edited_path": "../data/book/cond_view/00030.png",
+      "original_path": "../remove/book/source_view/00030.png",
+      "edited_path": "../remove/book/cond_view/00030.png",
       "original_source_path": "",
       "success": true,
       "device_id": 0
     },
     {
-      "original_path": "../data/book/source_view/00031.png",
-      "edited_path": "../data/book/cond_view/00031.png",
+      "original_path": "../remove/book/source_view/00031.png",
+      "edited_path": "../remove/book/cond_view/00031.png",
       "original_source_path": "",
       "success": true,
       "device_id": 1
     },
     {
-      "original_path": "../data/book/source_view/00032.png",
-      "edited_path": "../data/book/cond_view/00032.png",
+      "original_path": "../remove/book/source_view/00032.png",
+      "edited_path": "../remove/book/cond_view/00032.png",
       "original_source_path": "",
       "success": true,
       "device_id": 0
     },
     {
-      "original_path": "../data/book/source_view/00033.png",
-      "edited_path": "../data/book/cond_view/00033.png",
+      "original_path": "../remove/book/source_view/00033.png",
+      "edited_path": "../remove/book/cond_view/00033.png",
       "original_source_path": "",
       "success": true,
       "device_id": 1
     },
     {
-      "original_path": "../data/book/source_view/00034.png",
-      "edited_path": "../data/book/cond_view/00034.png",
+      "original_path": "../remove/book/source_view/00034.png",
+      "edited_path": "../remove/book/cond_view/00034.png",
       "original_source_path": "",
       "success": true,
       "device_id": 0
     },
     {
-      "original_path": "../data/book/source_view/00035.png",
-      "edited_path": "../data/book/cond_view/00035.png",
+      "original_path": "../remove/book/source_view/00035.png",
+      "edited_path": "../remove/book/cond_view/00035.png",
       "original_source_path": "",
       "success": true,
       "device_id": 1
     },
     {
-      "original_path": "../data/book/source_view/00036.png",
-      "edited_path": "../data/book/cond_view/00036.png",
+      "original_path": "../remove/book/source_view/00036.png",
+      "edited_path": "../remove/book/cond_view/00036.png",
       "original_source_path": "",
       "success": true,
       "device_id": 0
     },
     {
-      "original_path": "../data/book/source_view/00037.png",
-      "edited_path": "../data/book/cond_view/00037.png",
+      "original_path": "../remove/book/source_view/00037.png",
+      "edited_path": "../remove/book/cond_view/00037.png",
       "original_source_path": "",
       "success": true,
       "device_id": 1
     },
     {
-      "original_path": "../data/book/source_view/00038.png",
-      "edited_path": "../data/book/cond_view/00038.png",
+      "original_path": "../remove/book/source_view/00038.png",
+      "edited_path": "../remove/book/cond_view/00038.png",
       "original_source_path": "",
       "success": true,
       "device_id": 0
     },
     {
-      "original_path": "../data/book/source_view/00039.png",
-      "edited_path": "../data/book/cond_view/00039.png",
+      "original_path": "../remove/book/source_view/00039.png",
+      "edited_path": "../remove/book/cond_view/00039.png",
       "original_source_path": "",
       "success": true,
       "device_id": 1
     }
   ],
   "timestamp": "20250914_102459",
-  "output_folder": "../data/book",
+  "output_folder": "../remove/book",
   "source_images": []
 }
