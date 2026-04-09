@@ -1,5 +1,5 @@
 <h2 align="center">Omni-3DEdit: Generalized Versatile 3D Editing in One-Pass</h2>
-<h1 align="center" style="font-size: 40px; font-weight: 900;">
+<h1 align="center" style="font-size: 30px; font-weight: 600;">
   CVPR26 Highlight
 </h1>
 
