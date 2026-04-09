@@ -1,4 +1,7 @@
-# Omni-3DEdit: Generalized Versatile 3D Editing in One-Pass (CVPR26)
+## Omni-3DEdit: Generalized Versatile 3D Editing in One-Pass 
+<p align="center">
+CVPR26 Highlight
+</p>
 
 <p align="center">
   <a href="#">Liyi Chen</a><sup>*</sup>&nbsp;&nbsp;
