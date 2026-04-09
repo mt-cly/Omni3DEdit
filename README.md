@@ -1,7 +1,7 @@
 <h2 align="center">Omni-3DEdit: Generalized Versatile 3D Editing in One-Pass</h2>
-<h1 align="center" style="font-size: 20px; font-weight: 300;">
+<h4 align="center">
   CVPR26 Highlight
-</h1>
+</h4>
 
 <p align="center">
   <a href="#">Liyi Chen</a><sup>*</sup>&nbsp;&nbsp;
