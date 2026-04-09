@@ -1,6 +1,6 @@
 ## Omni-3DEdit: Generalized Versatile 3D Editing in One-Pass 
-<p align="center">
-CVPR26 Highlight
+<p align="center" style="font-size: 20px; font-weight: bold;">
+  CVPR26 Highlight
 </p>
 
 <p align="center">
